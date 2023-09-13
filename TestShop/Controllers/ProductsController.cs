@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TestShop.Models;
 
@@ -24,10 +19,18 @@ namespace TestShop.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
         {
-          if (_context.Products == null)
-          {
-              return NotFound();
-          }
+            if (_context.Products == null)
+            {
+                return NotFound();
+            }
+
+            var products = await _context.Products.ToListAsync();
+
+            foreach (var product in products)
+            {
+                product.ProductCategory = await _context.ProductCategories.Where(s => s.ID == product.ProductCategoryId).FirstOrDefaultAsync() ?? null;
+            }
+
             return await _context.Products.ToListAsync();
         }
 
@@ -35,10 +38,10 @@ namespace TestShop.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Product>> GetProduct(int id)
         {
-          if (_context.Products == null)
-          {
-              return NotFound();
-          }
+            if (_context.Products == null)
+            {
+                return NotFound();
+            }
             var product = await _context.Products.FindAsync(id);
 
             if (product == null)
@@ -58,8 +61,6 @@ namespace TestShop.Controllers
             {
                 return BadRequest();
             }
-
-            _context.Entry(product).State = EntityState.Modified;
 
             try
             {
@@ -85,10 +86,16 @@ namespace TestShop.Controllers
         [HttpPost]
         public async Task<ActionResult<Product>> PostProduct(Product product)
         {
-          if (_context.Products == null)
-          {
-              return Problem("Entity set 'TestShopContext.Products'  is null.");
-          }
+            if (_context.Products == null)
+            {
+                return Problem("Entity set 'TestShopContext.Products'  is null.");
+            }
+
+            var lastproduct = await _context.Products.OrderByDescending(x => x.ID).FirstOrDefaultAsync();
+            var productcategory = await _context.ProductCategories.Where(s => s.ID == product.ProductCategoryId).FirstOrDefaultAsync();
+            product.ID = lastproduct.ID + 1;
+            product.ProductCategory = productcategory;
+
             _context.Products.Add(product);
             await _context.SaveChangesAsync();
 

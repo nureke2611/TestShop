@@ -1,0 +1,77 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Товары</title>
+    <link rel="stylesheet" href="css/site.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+</head>
+<body>
+    <div>
+        <h1>Товары</h1>
+        <p id="productCount"></p>
+        <button id="addProduct">Добавить товар</button>
+        <div id="addProductModal" class="modal">
+            <div class="modal-content">
+                <span class="close" id="closeProductModal">&times;</span>
+                <p>Добавление товара</p>
+                <form action="javascript:void(0);" onsubmit="addProductItem()">
+                    <input type="hidden" id="productId" value="3">
+                    <input type="text" placeholder="Название" id="add_name">
+                    <input type="text" placeholder="Описание" id="add_description">
+                    <input type="text" placeholder="Цена" id="add_price">
+                    <input type="text" placeholder="Вес" id="add_weight">
+                    <input type="text" placeholder="Цвет" id="add_color">
+                    <div id="categoryDropDownList"></div>
+                    <input type="submit" value="Сохранить">
+                </form>
+            </div>
+        </div>
+        <table>
+            <thead>
+            <th>№</th>
+            <th>Название</th>
+            <th>Описание</th>
+            <th>Цена</th>
+            <th>Вес</th>
+            <th>Цвет</th>
+            <th>Категория</th>
+            <th>Действия</th>
+            </thead>
+            <tbody id="products"></tbody>
+        </table>
+    </div>
+    <div>
+        <h1>Категории</h1>
+        <p id="categoryCount"></p>
+        <button id="addCategory">Добавить категорию</button>
+        <div id="addCategoryModal" class="modal">
+            <div class="modal-content">
+                <span class="close" id="closeCategoryModal">&times;</span>
+                <p>Добавление категории</p>
+                <form action="javascript:void(0);" onsubmit="addCategoryItem()">
+                    <input type="hidden" id="categoryId" value="3">
+                    <input type="text" placeholder="Название" id="category_name">
+                    <input type="text" placeholder="Описание" id="category_description">
+                    <input type="submit" value="Сохранить">
+                </form>
+            </div>
+        </div>
+        <table>
+            <thead>
+            <th>№</th>
+            <th>Название</th>
+            <th>Описание</th>
+            <th>Действия</th>
+            </thead>
+            <tbody id="categories"></tbody>
+        </table>
+    </div>
+
+    <script src="js/site.js" asp-append-version="true"></script>
+    <script type="text/javascript">
+        getProducts();
+        getCategories();
+    </script>
+</body>
+</html>

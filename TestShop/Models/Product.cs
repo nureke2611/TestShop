@@ -17,6 +17,9 @@ namespace TestShop.Models
 
         public string Color {get; set; }
 
-        public int ProductCategoryId { get; set; }
+        public int? ProductCategoryId { get; set; }
+
+        [ForeignKey("ProductCategoryId")]
+        public ProductCategory ProductCategory { get; set; }
     }
 }

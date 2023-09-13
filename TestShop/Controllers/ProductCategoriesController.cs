@@ -89,6 +89,10 @@ namespace TestShop.Controllers
           {
               return Problem("Entity set 'TestShopContext.ProductCategories'  is null.");
           }
+
+          var lastCategory = await _context.ProductCategories.OrderByDescending(x=>x.ID).FirstOrDefaultAsync();
+            productCategory.ID = lastCategory.ID + 1;
+
             _context.ProductCategories.Add(productCategory);
             await _context.SaveChangesAsync();
 
